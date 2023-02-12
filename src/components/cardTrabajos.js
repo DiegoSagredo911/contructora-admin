@@ -1,63 +1,44 @@
-import { useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import CardTrabajos from "./cardTrabajos";
-import axios from "axios";
 
-const Works = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [work, setWork] = useState(null);
-  const { register, handleSubmit } = useForm();
-  const onSubmit =  (data) => {creatework(data) }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  async function creatework(data) {
-    data.imagenes = data.imagenes.split(',');
-    await axios.post("http://localhost:3001/work/",data)
-  }
-
-  async function getworks() {
-   let dataWorks = await axios.get("http://localhost:3001/works/")
-   setWork(dataWorks.data)
-  }
-
-  useEffect(()=>{
-    getworks()
-  },[])
-  return (
-    <>
-      <div className="flex flex-col p-6 ">
-        <div className="text-center">
-          <p className="text-6xl">Trabajos</p>
-        </div>
-        <div>
-          <div className="flex justify-center my-3">
-            <button
-              onClick={() => openModal()}
-              className="bg-blue-500 text-white px-2 pb-px rounded text-2xl hover:bg-blue-400 active:bg-blue-600 "
-            >
-              Crear trabajo
-            </button>
-          </div>
-          <div className="flex flex-row w-full flex-wrap justify-center">
+const CardTrabajos = ({imagen,titulo,description,fecha ,id}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const { register, handleSubmit } = useForm();
+    const onSubmit = (data) => console.log("Enviar para actualizar ",data);
+  
+    function closeModal() {
+      setIsOpen(false);
+    }
+  
+    function openModal() {
+      setIsOpen(true);
+    }
+    
+    return ( <>
+    <div class="flex p-5 bg-gray-100 text-black w-fit  flex-col shadow m-2 rounded">
+                <div className="flex justify-between mb-2">
+                    <button onClick={()=>openModal()} className=" rounded-md text-white px-2 bg-green-500 hover:bg-green-400 active:bg-green-600">Actualizar</button>
+                    <button className="rounded-md text-white px-2 bg-red-500 hover:bg-red-400 active:bg-red-600">Eliminar</button>
+                </div>
+              <div class="w-[250px] bg-black">
+                {
+                    imagen.split(",")?.map((element)=><img src={element} className="h-[200px] w-[250px]" alt="" />)
+                }
+              </div>
+              <div class=" w-[250px]">
+                <h1 class="text-3xl">{titulo?titulo:"N/A"} </h1>
+                <h2 class="text-xl">{description?description:"N/A"}
+                </h2>
+              </div>
+              <div class="flex justify-end text-gray-400">
+                <p>{fecha?fecha:"N/A"}</p>
+              </div>
+            </div>
             {
-                
-                work?.map((element,index) => <CardTrabajos key={index} imagen={element.photos} description={element.description} titulo={element.title} fecha={new Date(element.date * 1000).toLocaleDateString()}/>)
+                //modal
             }
-            
-
-          </div>
-        </div>
-      </div>
-
-      <Transition appear show={isOpen}>
+            <Transition appear show={isOpen}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             enter="ease-out duration-300"
@@ -94,23 +75,23 @@ const Works = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Crear trabajo   
+                    Crear trabajo
                   </Dialog.Title>
                   <div className="mt-2">
                     
                     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
                     <label for="">Imagenes</label>
-                    <textarea placeholder="link, link, link" className="shadow" {...register("imagenes")} rows="" cols=""></textarea>
+                    <textarea className="shadow" {...register("imagenes")} rows="" cols=""></textarea>
                     
                       <label for="">Titulo</label>
-                      <input placeholder="nombre" className="shadow"
+                      <input defaultValue={titulo} className="shadow"
                         {...register("titulo", {
                           required: true,
                           maxLength: 20,
                         })}
                       />
                       <label for="">Descripcion</label>
-                      <textarea className="shadow" {...register("descripcion")} rows="" cols=""></textarea>
+                      <textarea defaultValue={description} className="shadow" {...register("descripcion")} rows="" cols=""></textarea>
                       <button type="submit"> Enviar</button>
                     </form>
                   </div>
@@ -121,8 +102,7 @@ const Works = () => {
           </div>
         </Dialog>
       </Transition>
-    </>
-  );
-};
-
-export default Works;
+    </> );
+}
+ 
+export default CardTrabajos;

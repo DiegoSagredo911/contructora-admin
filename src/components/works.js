@@ -28,6 +28,15 @@ const Works = () => {
    setWork(dataWorks.data)
   }
 
+  async function actualizar(id,data) {
+    await axios.patch(`http://localhost:3001/work/${id}`,data)
+    getworks()
+   }
+   async function eliminar(id) {
+    await axios.delete(`http://localhost:3001/work/${id}`)
+    getworks()
+   }
+
   useEffect(()=>{
     getworks()
   },[])
@@ -49,7 +58,7 @@ const Works = () => {
           <div className="flex flex-row w-full flex-wrap justify-center">
             {
                 
-                work?.map((element,index) => <CardTrabajos key={index} imagen={element.photos} description={element.description} titulo={element.title} fecha={new Date(element.date * 1000).toLocaleDateString()}/>)
+                work?.map((element,index) => <CardTrabajos id={element.id} actualizar={actualizar} eliminar={eliminar} key={index} imagen={element.photos} description={element.description} titulo={element.title} fecha={new Date(element.date * 1000).toLocaleDateString()}/>)
             }
             
 

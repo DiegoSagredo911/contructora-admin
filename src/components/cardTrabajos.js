@@ -2,10 +2,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const CardTrabajos = ({imagen,titulo,description,fecha ,id}) => {
+const CardTrabajos = ({imagen,titulo,description,fecha ,id, actualizar, eliminar}) => {
     const [isOpen, setIsOpen] = useState(false);
     const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => console.log("Enviar para actualizar ",data);
+    const onSubmit = (data) => {actualizar(id, data); closeModal();};
   
     function closeModal() {
       setIsOpen(false);
@@ -19,7 +19,7 @@ const CardTrabajos = ({imagen,titulo,description,fecha ,id}) => {
     <div class="flex p-5 bg-gray-100 text-black w-fit  flex-col shadow m-2 rounded">
                 <div className="flex justify-between mb-2">
                     <button onClick={()=>openModal()} className=" rounded-md text-white px-2 bg-green-500 hover:bg-green-400 active:bg-green-600">Actualizar</button>
-                    <button className="rounded-md text-white px-2 bg-red-500 hover:bg-red-400 active:bg-red-600">Eliminar</button>
+                    <button onClick={()=>eliminar(id)} className="rounded-md text-white px-2 bg-red-500 hover:bg-red-400 active:bg-red-600">Eliminar</button>
                 </div>
               <div class="w-[250px] bg-black">
                 {
@@ -61,7 +61,7 @@ const CardTrabajos = ({imagen,titulo,description,fecha ,id}) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-[300px] p-6   max-w-md transform overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl transition-all">
                 <div className="flex justify-end">
                     <button
                       type="button"
@@ -81,7 +81,7 @@ const CardTrabajos = ({imagen,titulo,description,fecha ,id}) => {
                     
                     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
                     <label for="">Imagenes</label>
-                    <textarea className="shadow" {...register("imagenes")} rows="" cols=""></textarea>
+                    <textarea defaultValue={imagen} className="shadow" {...register("imagenes")} rows="" cols=""></textarea>
                     
                       <label for="">Titulo</label>
                       <input defaultValue={titulo} className="shadow"

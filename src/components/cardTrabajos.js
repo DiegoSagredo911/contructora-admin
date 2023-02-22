@@ -16,23 +16,23 @@ const CardTrabajos = ({imagen,titulo,description,fecha ,id, actualizar, eliminar
     }
     
     return ( <>
-    <div class="flex p-5 bg-gray-100 text-black w-fit  flex-col shadow m-2 rounded">
+    <div className="flex p-5 bg-gray-100 text-black w-fit  flex-col shadow m-2 rounded">
                 <div className="flex justify-between mb-2">
                     <button onClick={()=>openModal()} className=" rounded-md text-white px-2 bg-green-500 hover:bg-green-400 active:bg-green-600">Actualizar</button>
                     <button onClick={()=>eliminar(id)} className="rounded-md text-white px-2 bg-red-500 hover:bg-red-400 active:bg-red-600">Eliminar</button>
                 </div>
-              <div class="w-[250px] bg-black">
+              <div className="w-[250px] bg-black">
                 {
                     imagen.split(",")?.map((element)=><img src={element} className="h-[200px] w-[250px]" alt="" />)
                 }
               </div>
-              <div class=" w-[250px]">
-                <h1 class="text-3xl">{titulo?titulo:"N/A"} </h1>
-                <h2 class="text-xl">{description?description:"N/A"}
+              <div className=" w-[250px]">
+                <h1 className="text-3xl">{titulo?titulo:"N/A"} </h1>
+                <h2 className="text-xl">{description?description:"N/A"}
                 </h2>
               </div>
-              <div class="flex justify-end text-gray-400">
-                <p>{fecha?fecha:"N/A"}</p>
+              <div className="flex justify-end text-gray-400">
+                <p>{ fecha?(new Date(fecha).toLocaleDateString()):"N/A"}</p>
               </div>
             </div>
             {
@@ -61,7 +61,7 @@ const CardTrabajos = ({imagen,titulo,description,fecha ,id, actualizar, eliminar
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-[300px] p-6   max-w-md transform overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-[300px] max-h-[550px] md:w-[600px] lg:w-[600px] md:max-h-[600px] lg:max-h-[600px] overflow-y-auto  max-w-md p-6 transform overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl transition-all">
                 <div className="flex justify-end">
                     <button
                       type="button"
@@ -75,7 +75,7 @@ const CardTrabajos = ({imagen,titulo,description,fecha ,id, actualizar, eliminar
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Crear trabajo
+                    Actualizar trabajo
                   </Dialog.Title>
                   <div className="mt-2">
                     
